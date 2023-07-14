@@ -1,4 +1,4 @@
-FROM alpine
+FROM openjdk:17-alpine
 #声明作者
 LABEL maintainer="a little <little@autre.cn> https://coding.autre.cn"
 #环境变量
@@ -12,13 +12,14 @@ RUN set -x \
     ##&& apk --update add --no-cache tzdata \
     && apk add tzdata \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo 'Asia/Shanghai' >/etc/timezone \
     && apk del tzdata
     ## 清除安装软件及缓存
     ##&& rm -rf /tmp/* /var/cache/apk/*
-##安装openjdk8
-RUN set -x \
-    && apk add openjdk17 \
-    && rm -rf /tmp/* /var/cache/apk/*
+# ##安装openjdk8
+# RUN set -x \
+#     && apk add openjdk17 \
+#     && rm -rf /tmp/* /var/cache/apk/*
 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 #开放端口
